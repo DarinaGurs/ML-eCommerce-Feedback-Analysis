@@ -26,13 +26,6 @@
 
 Данные представлены в файле `feedbacks.json` и содержат 76 отзывов пользователей с сайта `mvideo.ru` на товар "*Стиральная машина узкая Indesit IWSD 51051 CIS*" - https://www.mvideo.ru/products/stiralnaya-mashina-uzkaya-indesit-iwsd-51051-cis-20033774?utm_source=google&utm_medium=organic&utm_campaign=google&utm_referrer=google.
 
-- name: имя автора
-- website: источник отзыва
-- date: дата отзыва
-- score: оценка (от 1.0 до 5.0)
-- text: текст отзыва
-
-
 **Формат данных:**
 
 ```json
@@ -65,7 +58,8 @@ with open('feedbacks.json', 'r', encoding='utf-8') as file:
 feedbacks = pd.DataFrame(data['feedbacks'])
 
 # Создание меток: положительный (1) если score >= 3.7, иначе отрицательный (0)
-feedbacks['label'] = (feedbacks['score'] >= 3.7).astype(int)```
+feedbacks['label'] = (feedbacks['score'] >= 3.7).astype(int)
+```
 
 ### 2. Предобработка текста
 
@@ -81,7 +75,8 @@ def preprocess_text(text):
     return ' '.join(tokens)
 
 # Применение предобработки
-feedbacks['processed_text'] = feedbacks['text'].apply(preprocess_text)```
+feedbacks['processed_text'] = feedbacks['text'].apply(preprocess_text)
+```
 
 ### 3. Векторизация текста
 
@@ -89,7 +84,8 @@ feedbacks['processed_text'] = feedbacks['text'].apply(preprocess_text)```
 # Векторизация текста с помощью CountVectorizer
 vectorizer = CountVectorizer()
 X = vectorizer.fit_transform(feedbacks['processed_text'])
-y = feedbacks['label']```
+y = feedbacks['label']
+```
 
 
 ### 4. Построение и обучение модели
@@ -103,17 +99,22 @@ model = MultinomialNB()
 model.fit(X_train, y_train)
 
 # Прогнозирование на тестовых данных
-y_pred = model.predict(X_test)```
+y_pred = model.predict(X_test)
+
 
 # Оценка модели
 print("Accuracy:", accuracy_score(y_test, y_pred))
 print(classification_report(y_test, y_pred, target_names=['Отрицательный', 'Положительный']))
+```
 
 ### Результаты классификации:
 
 Accuracy: 0.875
+
 Precision для негативных отзывов: 1.00
+
 Recall для негативных отзывов: 0.71
+
 F1-score для негативных отзывов: 0.83
 
 ### 5. Анализ негативных отзывов
@@ -127,7 +128,8 @@ negative_feedbacks['words'] = negative_feedbacks['processed_text'].str.split()
 negative_tokens = negative_feedbacks['words'].explode().tolist()
 
 # Подсчет частоты слов
-word_counts = Counter(negative_tokens)```
+word_counts = Counter(negative_tokens)
+```
 
 ### 6. Визуализация результатов
 
@@ -147,6 +149,7 @@ word_counts = Counter(negative_tokens)```
 #### Визуализации:
 
 Tree-map с топ-10 словами негативных отзывов
+
 Статистика по наиболее частым проблемам
 
 
@@ -157,24 +160,35 @@ Tree-map с топ-10 словами негативных отзывов
 - Поломки и неисправности:
 
 "сломаться" (9 упоминаний)
+
 "отжимать" (7 упоминаний) - проблемы с отжимом
+
 "загудел подшипник" - механические проблемы
 
 - Качество стирки:
+  
 "плохо" (5 упоминаний)
+
 "полоскать" (4 упоминания) - плохое выполаскивание
+
 "порошок" - проблемы с растворением моющих средств
 
 - Шум и вибрация:
+  
 "шумный" (5 упоминаний)
+
 "трясётся" - сильная вибрация при работе
 
 - Временные проблемы:
+  
 "год", "месяц" - короткий срок службы
+
 частые поломки в первые годы использования
 
 - Вода и температурный режим:
+  
 "вода" (8 упоминаний) - проблемы с набором/сливом воды
+
 "греть" - не нагревает воду
 
 ### Рекомендации для производителя:
