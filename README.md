@@ -59,6 +59,7 @@ feedbacks = pd.DataFrame(data['feedbacks'])
 
 # Создание меток: положительный (1) если score >= 3.7, иначе отрицательный (0)
 feedbacks['label'] = (feedbacks['score'] >= 3.7).astype(int)
+
 ```
 
 ### 2. Предобработка текста
