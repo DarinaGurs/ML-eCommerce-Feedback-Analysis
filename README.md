@@ -47,7 +47,7 @@
         },
         ...
     ]
-}
+}```
 
 JSON был выбран как структурированный, легко читаемый как человеком, так и машиной формат. Он идеально подходит для хранения иерархических данных (список объектов с одинаковым набором полей), легко парсится на большинстве языков программирования и является стандартом де-факто для передачи данных через веб-API, что актуально для задач электронной коммерции.
 
@@ -64,7 +64,7 @@ with open('feedbacks.json', 'r', encoding='utf-8') as file:
 feedbacks = pd.DataFrame(data['feedbacks'])
 
 # Создание меток: положительный (1) если score >= 3.7, иначе отрицательный (0)
-feedbacks['label'] = (feedbacks['score'] >= 3.7).astype(int)
+feedbacks['label'] = (feedbacks['score'] >= 3.7).astype(int)```
 
 ### 2. Предобработка текста
 
@@ -80,7 +80,7 @@ def preprocess_text(text):
     return ' '.join(tokens)
 
 # Применение предобработки
-feedbacks['processed_text'] = feedbacks['text'].apply(preprocess_text)
+feedbacks['processed_text'] = feedbacks['text'].apply(preprocess_text)```
 
 ### 3. Векторизация текста
 
@@ -88,7 +88,7 @@ feedbacks['processed_text'] = feedbacks['text'].apply(preprocess_text)
 # Векторизация текста с помощью CountVectorizer
 vectorizer = CountVectorizer()
 X = vectorizer.fit_transform(feedbacks['processed_text'])
-y = feedbacks['label']
+y = feedbacks['label']```
 
 
 ### 4. Построение и обучение модели
@@ -102,7 +102,7 @@ model = MultinomialNB()
 model.fit(X_train, y_train)
 
 # Прогнозирование на тестовых данных
-y_pred = model.predict(X_test)
+y_pred = model.predict(X_test)```
 
 # Оценка модели
 print("Accuracy:", accuracy_score(y_test, y_pred))
@@ -126,7 +126,7 @@ negative_feedbacks['words'] = negative_feedbacks['processed_text'].str.split()
 negative_tokens = negative_feedbacks['words'].explode().tolist()
 
 # Подсчет частоты слов
-word_counts = Counter(negative_tokens)
+word_counts = Counter(negative_tokens)```
 
 ### 6. Визуализация результатов
 
